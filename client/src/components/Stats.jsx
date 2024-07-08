@@ -1,13 +1,23 @@
-import { Statistic, message } from 'antd'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Bar, Doughnut } from 'react-chartjs-2'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { Bar, Doughnut } from 'react-chartjs-2';
+import { Statistic, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
+// Register the required components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 export default function Stats({ month, monthText }) {
     let [data, setData] = useState();
     const [loading, setLoading] = useState(false);
-    
     
     const getData = async () => {
         try {
@@ -27,7 +37,7 @@ export default function Stats({ month, monthText }) {
         return () => {
             setData(null);
         }
-    }, [month])
+    }, [month]);
 
     return (
         <>
@@ -49,7 +59,7 @@ export default function Stats({ month, monthText }) {
                 {data && <PieChart data={data?.pieChartData} />}
             </div>
         </>
-    )
+    );
 }
 
 function Totals({ stats, loading }) {
@@ -85,7 +95,7 @@ function Totals({ stats, loading }) {
                 loading={loading}
             />
         </div>
-    )
+    );
 }
 
 function BarChart({ data }) {
@@ -122,8 +132,6 @@ function BarChart({ data }) {
                 text: 'No of products per price range'
             },
         },
-
-
     };
 
     let labels = Object.keys(data);
@@ -140,7 +148,7 @@ function BarChart({ data }) {
                 ]
             }
         ]
-    }
+    };
 
     return (
         <Bar
@@ -148,7 +156,7 @@ function BarChart({ data }) {
             options={options}
             style={{ margin: '24px 0px', maxWidth: '900px', maxHeight: '500px' }}
         />
-    )
+    );
 }
 
 function PieChart({ data }) {
@@ -163,11 +171,12 @@ function PieChart({ data }) {
                 data: values,
             }
         ]
-    }
+    };
+
     return (
         <Doughnut
             data={chartData}
             style={{ margin: '24px 0px', maxHeight: '400px', maxWidth: '400px' }}
         />
-    )
+    );
 }
